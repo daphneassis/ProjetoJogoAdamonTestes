@@ -33,8 +33,6 @@ class JogadorServiceTest {
 
     /*
  Testes
- verificar no jogador que ganha se o saldo foi atualizado//
- se quem ganha tem o saldo mesmo valor do inicio do jogo
  verificar no adamon que ganha se a vida foi acrescida
  verificar no adamon que perde se perdeu pontos de vida
  se no caso da vida do adamon zerar, dele ser tirado da lista do jogador
@@ -50,13 +48,32 @@ class JogadorServiceTest {
         Jogador jogador2 = obterJogador2();
         jogador1.setAdamons(obterAdamonsJogador1());
         jogador2.setAdamons(obterAdamonsJogador2());
+        BigDecimal saldoJogador1AntesBatalha = jogador1.getSaldo();
 
         //execucao
         jogadorService.batalhar(jogador1, jogador2);
 
         //verificação
-        Assertions.assertTrue(jogador1.getSaldo().compareTo(TestUtils.obterJogador1().getSaldo())!=0);
+        Assertions.assertNotEquals(saldoJogador1AntesBatalha, jogador1.getSaldo());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Test
     void deveAtualizarSaldoAposBatalhaRandomica(){
         //cenario
@@ -64,12 +81,13 @@ class JogadorServiceTest {
         Jogador jogador2 = obterJogador2();
         jogador1.setAdamons(obterAdamonsJogador1());
         jogador2.setAdamons(obterAdamonsJogador2());
+        BigDecimal saldoJogador1AntesBatalha = jogador1.getSaldo();
 
         //execucao
         jogadorService.batalhaAutomatizadaComDoisJogadores(jogador1, jogador2);
 
         //verificação
-        Assertions.assertTrue(jogador1.getSaldo().compareTo(TestUtils.obterJogador1().getSaldo())!=0);
+        Assertions.assertNotEquals(saldoJogador1AntesBatalha, jogador1.getSaldo());
     }
 
 

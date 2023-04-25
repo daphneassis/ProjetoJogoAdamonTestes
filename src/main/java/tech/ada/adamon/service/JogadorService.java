@@ -27,57 +27,57 @@ public class JogadorService {
     um jogador será vitorioso o adversário não possuir mais adamons vivos (vida > 0);
      */
 
+       /*
+    Regras da Batalha:
+    Dois jogadores vão batalhar com uma equipe de 6 adamons cada
+    O adamon da posição 0 do Jogador1 luta contra o adamon da posição 0 do Jogador2, depois os dois da posição 1 e assim por diante
+    É calculada a diferença de pontos entre ataque e defesa (diferencaVida) em cada rodada:
+    -> Se maior do que 0 (cenário atacante ganha):
+    Atacante ganha 20 pontos em vida e mais 10 no ataque;
+    Defensor perde 20 pontos em vida;
+    Se a vida do defensor chegar a 0, ele morreu e é removido da lista do jogador.
+    -> Se menor do que 0 (cenário em que o defensor ganha):
+    Defensor ganha 20 pontos em vida e mais 15 na defesa;
+    Atacante perde 20 pontos em vida;
+    Se a vida do atacante chegar a 0, ele morreu e é retirado da lista do jogador.
+    O jogador que ganhar a partida ganha 25 pontos de saldo na carteira pra compra de Adamons
+    *Adamons-frutas e Adamons-legumes
+
+    Na BatalhaAutomatizadaComDoisJogadores, o computador que joga.
+    A diferença é o método aleatório para saber quem vai atacar e quem vai defender (se jogador 1 ou 2)
+    */
 
     public void batalhar(Jogador jogador1, Jogador jogador2) {
         List<Adamon> equipeAdamonJogadorUm = jogador1.getAdamons();
         List<Adamon> equipeAdamonJogadorDois = jogador2.getAdamons();
         Jogador atacante = jogador1;
         Jogador defensor = jogador2;
-        for(int i=0;i<6;i++) {
-            while ((equipeAdamonJogadorUm.size()> 0) && (equipeAdamonJogadorDois.size()> 0)) {
-                Adamon adamonAtacante = equipeAdamonJogadorUm.get(i);
-                Adamon adamonDefensor = equipeAdamonJogadorDois.get(i);
-                int diferencaAtaque = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
-                if (diferencaAtaque > 0) {
-                    cenarioAtacanteGanha(atacante, adamonAtacante);
-                    descrescimoVidaPerdedor(adamonDefensor);
-                    if (adamonDefensor.getVida() <= 0) {
-                       List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
-                       listaAtualAdamonsDefensor.remove(adamonDefensor);
-                       defensor.setAdamons(listaAtualAdamonsDefensor);
-                        System.out.println("O adamon "+ adamonDefensor.getNome()+ "morreu");
-                    }
-                } else {
-                    cenarioDefensorGanha(defensor, adamonDefensor);
-                    descrescimoVidaPerdedor(adamonAtacante);
-                    if (adamonAtacante.getVida() <= 0) {
-                       List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
-                       listaAtualAdamonsAtacante.remove(adamonAtacante);
-                       atacante.setAdamons(listaAtualAdamonsAtacante);
-                        System.out.println("O adamon "+ adamonAtacante.getNome()+ "morreu");
-                    }
+        for (int i = 0; i < equipeAdamonJogadorUm.size() && equipeAdamonJogadorDois.size() > 0; i++) {
+            Adamon adamonAtacante = equipeAdamonJogadorUm.get(i);
+            Adamon adamonDefensor = equipeAdamonJogadorDois.get(i);
+            int diferencaAtaque = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
+            if (diferencaAtaque > 0) {
+                cenarioAtacanteGanha(atacante, adamonAtacante);
+                descrescimoVidaPerdedor(adamonDefensor);
+                if (adamonDefensor.getVida() <= 0) { // crio uma lista temporária mutável
+                    List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
+                    listaAtualAdamonsDefensor.remove(adamonDefensor);
+                    defensor.setAdamons(listaAtualAdamonsDefensor);
+                    System.out.println("O adamon " + adamonDefensor.getNome() + " morreu");
+                }
+            } else {
+                cenarioDefensorGanha(defensor, adamonDefensor);
+                descrescimoVidaPerdedor(adamonAtacante);
+                if (adamonAtacante.getVida() <= 0) {
+                    List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
+                    listaAtualAdamonsAtacante.remove(adamonAtacante);
+                    atacante.setAdamons(listaAtualAdamonsAtacante);
+                    System.out.println("O adamon " + adamonAtacante.getNome() + " morreu");
                 }
             }
         }
     }
-    /*
-    Regras da Batalha Dentre Dois Jogadores De Forma Automatizada:
 
-    A batalha vai durar tantos rounds quanto preciso até que uma das listas esteja vazia
-    Metodo aleatorio para saber quem vai atacar e quem vai defender (se jogador 1 ou 2)
-    Metodo aleatorio para saber qual dos adamons vai lutar ou defender
-    Vai ser calculada a diferença de pontos entre ataque e defesa (diferencaVida):
-    Se maior do que 0 (cenário atacante ganha):
-    atacante ganha 20 pontos em vida e mais 10 no ataque
-    defensor perde 20 pontos em vida
-    ****Se a vida do defensor chegar a 0, ele morreu e é retirado da lista do jogador
-    Se menor do que 0 (cenário em que o defensor ganha)
-    defensor ganha 20 pontos em vida e mais 15 na defesa
-    atacante perde 20 pontos em vida
-   **** Se a vida do atacante chegar a 0, ele morreu e é retirado da lista do jogador
-    O jogador que ganhar a partida ganha 25 pontos de saldo na carteira pra compra de Adamons
-    *Adamons-frutas e Adamons-legumes
-    */
 
     public void batalhaAutomatizadaComDoisJogadores(Jogador jogador1, Jogador jogador2) {
         List<Adamon> equipeAdamonJogadorUm = jogador1.getAdamons();
@@ -91,7 +91,7 @@ public class JogadorService {
             atacante = jogador2;
             defensor = jogador1;
         }
-        while ((equipeAdamonJogadorUm.size() >0) && (equipeAdamonJogadorDois.size() > 0)) {
+        for (int i = 0; i < equipeAdamonJogadorUm.size() && equipeAdamonJogadorDois.size() > 0; i++) {
             Adamon adamonAtacante = atacante.getAdamons().get((int) (Math.random() * atacante.getAdamons().size()));
             Adamon adamonDefensor = defensor.getAdamons().get((int) (Math.random() * defensor.getAdamons().size()));
             int diferencaVida = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
@@ -100,17 +100,18 @@ public class JogadorService {
                 descrescimoVidaPerdedor(adamonDefensor);
                 if (adamonDefensor.getVida() <= 0) {
                     List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
-                   listaAtualAdamonsDefensor.remove(adamonDefensor);
-                   defensor.setAdamons(listaAtualAdamonsDefensor);
-                    System.out.println("O adamon "+ adamonDefensor.getNome()+ "morreu");
+                    listaAtualAdamonsDefensor.remove(adamonDefensor);
+                    defensor.setAdamons(listaAtualAdamonsDefensor);
+                    System.out.println("O adamon " + adamonDefensor.getNome() + " morreu");
                 }
             } else {
                 cenarioDefensorGanha(defensor, adamonDefensor);
                 descrescimoVidaPerdedor(adamonAtacante);
                 if (adamonAtacante.getVida() <= 0) {
                     List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
-                   listaAtualAdamonsAtacante.remove(adamonAtacante);
-                   atacante.setAdamons(listaAtualAdamonsAtacante);
+                    listaAtualAdamonsAtacante.remove(adamonAtacante);
+                    atacante.setAdamons(listaAtualAdamonsAtacante);
+                    System.out.println("O adamon " + adamonAtacante.getNome() + " morreu");
                 }
 
             }
