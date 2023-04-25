@@ -34,7 +34,7 @@ public class JogadorService {
         Jogador atacante = jogador1;
         Jogador defensor = jogador2;
         for(int i=0;i<6;i++) {
-            while ((equipeAdamonJogadorUm.size()>= 0) && (equipeAdamonJogadorDois.size()>= 0)) {
+            while ((equipeAdamonJogadorUm.size()> 0) && (equipeAdamonJogadorDois.size()> 0)) {
                 Adamon adamonAtacante = equipeAdamonJogadorUm.get(i);
                 Adamon adamonDefensor = equipeAdamonJogadorDois.get(i);
                 int diferencaAtaque = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
@@ -42,16 +42,19 @@ public class JogadorService {
                     cenarioAtacanteGanha(atacante, adamonAtacante);
                     descrescimoVidaPerdedor(adamonDefensor);
                     if (adamonDefensor.getVida() <= 0) {
-                        List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(equipeAdamonJogadorDois);
-                        listaAtualAdamonsDefensor.remove(adamonDefensor);
+                       List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
+                       listaAtualAdamonsDefensor.remove(adamonDefensor);
+                       defensor.setAdamons(listaAtualAdamonsDefensor);
                         System.out.println("O adamon "+ adamonDefensor.getNome()+ "morreu");
                     }
                 } else {
                     cenarioDefensorGanha(defensor, adamonDefensor);
                     descrescimoVidaPerdedor(adamonAtacante);
                     if (adamonAtacante.getVida() <= 0) {
-                        List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(equipeAdamonJogadorUm);
-                        listaAtualAdamonsAtacante.remove(adamonAtacante);
+                       List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
+                       listaAtualAdamonsAtacante.remove(adamonAtacante);
+                       atacante.setAdamons(listaAtualAdamonsAtacante);
+                        System.out.println("O adamon "+ adamonAtacante.getNome()+ "morreu");
                     }
                 }
             }
@@ -88,7 +91,7 @@ public class JogadorService {
             atacante = jogador2;
             defensor = jogador1;
         }
-        while ((equipeAdamonJogadorUm.size() >= 0) && (equipeAdamonJogadorDois.size() >= 0)) {
+        while ((equipeAdamonJogadorUm.size() >0) && (equipeAdamonJogadorDois.size() > 0)) {
             Adamon adamonAtacante = atacante.getAdamons().get((int) (Math.random() * atacante.getAdamons().size()));
             Adamon adamonDefensor = defensor.getAdamons().get((int) (Math.random() * defensor.getAdamons().size()));
             int diferencaVida = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
@@ -97,7 +100,8 @@ public class JogadorService {
                 descrescimoVidaPerdedor(adamonDefensor);
                 if (adamonDefensor.getVida() <= 0) {
                     List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
-                    listaAtualAdamonsDefensor.remove(adamonDefensor);
+                   listaAtualAdamonsDefensor.remove(adamonDefensor);
+                   defensor.setAdamons(listaAtualAdamonsDefensor);
                     System.out.println("O adamon "+ adamonDefensor.getNome()+ "morreu");
                 }
             } else {
@@ -105,8 +109,10 @@ public class JogadorService {
                 descrescimoVidaPerdedor(adamonAtacante);
                 if (adamonAtacante.getVida() <= 0) {
                     List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
-                    listaAtualAdamonsAtacante.remove(adamonAtacante);
+                   listaAtualAdamonsAtacante.remove(adamonAtacante);
+                   atacante.setAdamons(listaAtualAdamonsAtacante);
                 }
+
             }
         }
     }

@@ -55,8 +55,7 @@ class JogadorServiceTest {
         jogadorService.batalhar(jogador1, jogador2);
 
         //verificação
-        Assertions.assertTrue(jogador1.getSaldo()!=TestUtils.obterJogador1().getSaldo());
-
+        Assertions.assertTrue(jogador1.getSaldo().compareTo(TestUtils.obterJogador1().getSaldo())!=0);
     }
     @Test
     void deveAtualizarSaldoAposBatalhaRandomica(){
@@ -70,7 +69,7 @@ class JogadorServiceTest {
         jogadorService.batalhaAutomatizadaComDoisJogadores(jogador1, jogador2);
 
         //verificação
-        Assertions.assertTrue(jogador1.getSaldo()!=TestUtils.obterJogador1().getSaldo());
+        Assertions.assertTrue(jogador1.getSaldo().compareTo(TestUtils.obterJogador1().getSaldo())!=0);
     }
 
 
