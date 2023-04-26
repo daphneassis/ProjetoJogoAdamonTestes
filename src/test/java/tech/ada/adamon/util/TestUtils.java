@@ -72,7 +72,7 @@ public class TestUtils {
 
     public static List<Adamon> obterAdamonsJogador2() {
         Adamon adamon = new Adamon("Alface", 3, 67, 51);
-        Adamon adamon1 = new Adamon("Cenoura", 9, 25, 46);
+        Adamon adamon1 = new Adamon("Cenoura", 9, 25, 30);
         Adamon adamon2 = new Adamon("Beterraba", 5, 77, 20);
         Adamon adamon3 = new Adamon("Abobrinha", 10, 89, 36);
         Adamon adamon4 = new Adamon("Espinafre", 15,39, 99);

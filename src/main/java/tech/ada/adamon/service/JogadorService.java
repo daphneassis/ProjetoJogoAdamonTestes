@@ -50,38 +50,46 @@ public class JogadorService {
     public void batalhar(Jogador jogador1, Jogador jogador2) {
         List<Adamon> equipeAdamonJogadorUm = jogador1.getAdamons();
         List<Adamon> equipeAdamonJogadorDois = jogador2.getAdamons();
+        boolean jogador1ComEquipeCompleta = equipeAdamonJogadorUm.size() == 6;
+        boolean jogador2ComEquipeCompleta = equipeAdamonJogadorUm.size() == 6;
         Jogador atacante = jogador1;
         Jogador defensor = jogador2;
-        for (int i = 0; i < equipeAdamonJogadorUm.size() && equipeAdamonJogadorDois.size() > 0; i++) {
-            Adamon adamonAtacante = equipeAdamonJogadorUm.get(i);
-            Adamon adamonDefensor = equipeAdamonJogadorDois.get(i);
-            int diferencaAtaque = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
-            if (diferencaAtaque > 0) {
-                cenarioAtacanteGanha(atacante, adamonAtacante);
-                descrescimoVidaPerdedor(adamonDefensor);
-                if (adamonDefensor.getVida() <= 0) { // crio uma lista temporária mutável
-                    List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
-                    listaAtualAdamonsDefensor.remove(adamonDefensor);
-                    defensor.setAdamons(listaAtualAdamonsDefensor);
-                    System.out.println("O adamon " + adamonDefensor.getNome() + " morreu");
-                }
-            } else {
-                cenarioDefensorGanha(defensor, adamonDefensor);
-                descrescimoVidaPerdedor(adamonAtacante);
-                if (adamonAtacante.getVida() <= 0) {
-                    List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
-                    listaAtualAdamonsAtacante.remove(adamonAtacante);
-                    atacante.setAdamons(listaAtualAdamonsAtacante);
-                    System.out.println("O adamon " + adamonAtacante.getNome() + " morreu");
+        if (jogador1ComEquipeCompleta && jogador2ComEquipeCompleta) {
+            for (int i = 0; i < equipeAdamonJogadorUm.size() && equipeAdamonJogadorDois.size() > 0; i++) {
+                Adamon adamonAtacante = equipeAdamonJogadorUm.get(i);
+                Adamon adamonDefensor = equipeAdamonJogadorDois.get(i);
+                int diferencaAtaque = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
+                if (diferencaAtaque > 0) {
+                    cenarioAtacanteGanha(atacante, adamonAtacante);
+                    descrescimoVidaPerdedor(adamonDefensor);
+                    if (adamonDefensor.getVida() <= 0) {
+                        List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
+                        listaAtualAdamonsDefensor.remove(adamonDefensor);
+                        defensor.setAdamons(listaAtualAdamonsDefensor);
+                        System.out.println("O adamon " + adamonDefensor.getNome() + " morreu");
+                    }
+                } else {
+                    cenarioDefensorGanha(defensor, adamonDefensor);
+                    descrescimoVidaPerdedor(adamonAtacante);
+                    if (adamonAtacante.getVida() <= 0) {
+                        List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
+                        listaAtualAdamonsAtacante.remove(adamonAtacante);
+                        atacante.setAdamons(listaAtualAdamonsAtacante);
+                        System.out.println("O adamon " + adamonAtacante.getNome() + " morreu");
+                    }
                 }
             }
+        } else if (!jogador1ComEquipeCompleta || !jogador2ComEquipeCompleta) {
+            throw new RuntimeException("Uma das equipes está incompleta");
+        } else if (equipeAdamonJogadorUm.isEmpty() || equipeAdamonJogadorDois.isEmpty()) {
+            throw new RuntimeException("A equipe de adamons não pode estar vazia");
         }
     }
-
-
     public void batalhaAutomatizadaComDoisJogadores(Jogador jogador1, Jogador jogador2) {
         List<Adamon> equipeAdamonJogadorUm = jogador1.getAdamons();
         List<Adamon> equipeAdamonJogadorDois = jogador2.getAdamons();
+        boolean jogador1ComEquipeCompleta = equipeAdamonJogadorUm.size() == 6;
+        boolean jogador2ComEquipeCompleta = equipeAdamonJogadorUm.size() == 6;
         Jogador atacante = new Jogador();
         Jogador defensor = new Jogador();
         if (Math.random() < 0.5) {
@@ -91,31 +99,36 @@ public class JogadorService {
             atacante = jogador2;
             defensor = jogador1;
         }
-        for (int i = 0; i < equipeAdamonJogadorUm.size() && equipeAdamonJogadorDois.size() > 0; i++) {
-            Adamon adamonAtacante = atacante.getAdamons().get((int) (Math.random() * atacante.getAdamons().size()));
-            Adamon adamonDefensor = defensor.getAdamons().get((int) (Math.random() * defensor.getAdamons().size()));
-            int diferencaVida = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
-            if (diferencaVida > 0) {
-                cenarioAtacanteGanha(atacante, adamonAtacante);
-                descrescimoVidaPerdedor(adamonDefensor);
-                if (adamonDefensor.getVida() <= 0) {
-                    List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
-                    listaAtualAdamonsDefensor.remove(adamonDefensor);
-                    defensor.setAdamons(listaAtualAdamonsDefensor);
-                    System.out.println("O adamon " + adamonDefensor.getNome() + " morreu");
+        if (jogador1ComEquipeCompleta && jogador2ComEquipeCompleta) {
+            for (int i = 0; i < equipeAdamonJogadorUm.size() && equipeAdamonJogadorDois.size() > 0; i++) {
+                Adamon adamonAtacante = atacante.getAdamons().get((int) (Math.random() * atacante.getAdamons().size()));
+                Adamon adamonDefensor = defensor.getAdamons().get((int) (Math.random() * defensor.getAdamons().size()));
+                int diferencaVida = adamonAtacante.getAtaque() - adamonDefensor.getDefesa();
+                if (diferencaVida > 0) {
+                    cenarioAtacanteGanha(atacante, adamonAtacante);
+                    descrescimoVidaPerdedor(adamonDefensor);
+                    if (adamonDefensor.getVida() <= 0) {
+                        List<Adamon> listaAtualAdamonsDefensor = new ArrayList<>(defensor.getAdamons());
+                        listaAtualAdamonsDefensor.remove(adamonDefensor);
+                        defensor.setAdamons(listaAtualAdamonsDefensor);
+                        System.out.println("O adamon " + adamonDefensor.getNome() + " morreu");
+                    }
+                } else {
+                    cenarioDefensorGanha(defensor, adamonDefensor);
+                    descrescimoVidaPerdedor(adamonAtacante);
+                    if (adamonAtacante.getVida() <= 0) {
+                        List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
+                        listaAtualAdamonsAtacante.remove(adamonAtacante);
+                        atacante.setAdamons(listaAtualAdamonsAtacante);
+                        System.out.println("O adamon " + adamonAtacante.getNome() + " morreu");
+                    }
                 }
-            } else {
-                cenarioDefensorGanha(defensor, adamonDefensor);
-                descrescimoVidaPerdedor(adamonAtacante);
-                if (adamonAtacante.getVida() <= 0) {
-                    List<Adamon> listaAtualAdamonsAtacante = new ArrayList<>(atacante.getAdamons());
-                    listaAtualAdamonsAtacante.remove(adamonAtacante);
-                    atacante.setAdamons(listaAtualAdamonsAtacante);
-                    System.out.println("O adamon " + adamonAtacante.getNome() + " morreu");
-                }
-
             }
-        }
+        } else if (!jogador1ComEquipeCompleta || !jogador2ComEquipeCompleta) {
+            throw new RuntimeException("Uma das equipes não está completa");
+        }  else if (equipeAdamonJogadorUm.isEmpty() || equipeAdamonJogadorDois.isEmpty()) {
+        throw new RuntimeException("A equipe de adamons não pode estar vazia");
+    }
     }
 
     public void cenarioAtacanteGanha(Jogador jogador, Adamon adamon) {
@@ -157,7 +170,6 @@ public class JogadorService {
         adamon.setVida(adamon.getVida() - 20);
     }
 
-
     public void comprarAdamon(Jogador jogador, Adamon adamon) {
         List<Adamon> equipeAdamonJogador = jogador.getAdamons();
         BigDecimal saldoAtual = jogador.getSaldo();
@@ -192,6 +204,5 @@ public class JogadorService {
     public Jogador salvarJogador(SalvarJogadorDTO dto) {
         return jogadorRepository.save(JogadorDtoConverter.converterDto(dto));
     }
-
 
 }
