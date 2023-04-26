@@ -1,4 +1,4 @@
-# ProjetoJogoAdamonTestes
+# Projeto Jogo Adamon Testes para o Curso ADA- Lojas Americanas, Módulo Testes Automatizados
 
     Regras da Batalha de Adamons
     Dois jogadores vão batalhar com uma equipe de 6 adamons cada
